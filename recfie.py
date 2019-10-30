@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, shutil, subprocess, sys
+import os, shutil, subprocess, sys, time
 from datetime import datetime
 
 USB_PATH = "/run/media/arebel/2004-1014/DCIM/DCIMA/"
@@ -7,15 +7,22 @@ TEMP_USB_PATH = "/home/arebel/videos/recfie/temp/"
 UNPROCESSED_PATH = "/home/arebel/videos/recfie/unprocessed/"
 FINAL_PATH = "/home/arebel/videos/recfie/final/"
 QUEUE_FILE_PATH = "/home/arebel/videos/recfie/conversion-queue.txt"
-
-source_path = USB_PATH
+USB_WAIT_DELAY = 10
 
 def get_sorted_files(path):
     files = os.listdir(path)
     files.sort()
     return files
 
+source_path = USB_PATH
+while not os.path.isdir(source_path):
+    print("Path " + source_path + " is not accessible at the moment. Retrying in " + str(USB_WAIT_DELAY) + " seconds...")
+    time.sleep(USB_WAIT_DELAY)
+
 files_to_process = get_sorted_files(source_path)
+if len(files_to_process) <= 0:
+    print("There are no files to process.")
+    sys.exit()
 
 print("Converting files...")
 for f in files_to_process:
