@@ -45,15 +45,21 @@ with open(QUEUE_FILE_PATH, "w+") as f:
 print("Queue added.")
 
 print("\nConcatenating files...")
-cmd = "ffmpeg -f concat -safe 0 -i " + QUEUE_FILE_PATH  + " -c copy " + FINAL_PATH + datetime.today().strftime("%Y-%m-%d_%H-%M-%S") + ".mp4"
+target_file_path = FINAL_PATH + datetime.today().strftime("%Y-%m-%d_%H-%M-%S") + ".mp4"
+cmd = "ffmpeg -f concat -safe 0 -i " + QUEUE_FILE_PATH  + " -c copy " + target_file_path
 print(cmd)
 subprocess.call(cmd, shell=True)
 print("Files concatenated.")
 
-print('Removing files in ' + UNPROCESSED_PATH)
-for f in os.listdir(UNPROCESSED_PATH):
-    os.remove(UNPROCESSED_PATH + f)
+cmd = 'vlc ' + target_file_path
+subprocess.call(cmd, shell=True)
 
-print('Removing files in ' + source_path)
-for f in os.listdir(source_path):
-    os.remove(source_path + f)
+choice = input("Delete files? (y/N): ")
+if choice == "y":
+    print('Removing files in ' + UNPROCESSED_PATH)
+    for f in os.listdir(UNPROCESSED_PATH):
+        os.remove(UNPROCESSED_PATH + f)
+    
+    print('Removing files in ' + source_path)
+    for f in os.listdir(source_path):
+        os.remove(source_path + f)
