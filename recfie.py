@@ -20,7 +20,7 @@ files_to_process = get_sorted_files(source_path)
 print("Converting files...")
 for f in files_to_process:
     file_name = f.split(".")[0]
-    cmd = "HandBrakeCLI -i " + source_path + f + " -o " + UNPROCESSED_PATH + file_name + ".mp4"
+    cmd = "HandBrakeCLI -O -b 1500 --encoder-preset veryfast -i " + source_path + f + " -o " + UNPROCESSED_PATH + file_name + ".mp4"
     print("Sending command: " + cmd)
     subprocess.call(cmd, shell=True)
 
