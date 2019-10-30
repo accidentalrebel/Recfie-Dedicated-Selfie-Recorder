@@ -8,7 +8,7 @@ UNPROCESSED_PATH = "/home/arebel/videos/recfie/unprocessed/"
 FINAL_PATH = "/home/arebel/videos/recfie/final/"
 QUEUE_FILE_PATH = "/home/arebel/videos/recfie/conversion-queue.txt"
 
-source_path = TEMP_USB_PATH
+source_path = USB_PATH
 
 def get_sorted_files(path):
     files = os.listdir(path)
@@ -20,7 +20,7 @@ files_to_process = get_sorted_files(source_path)
 print("Converting files...")
 for f in files_to_process:
     file_name = f.split(".")[0]
-    cmd = "HandBrakeCLI -O --encoder-preset veryfast -i " + source_path + f + " -o " + UNPROCESSED_PATH + file_name + ".mp4"
+    cmd = "HandBrakeCLI -O -b 1000 --encoder-preset veryfast -i " + source_path + f + " -o " + UNPROCESSED_PATH + file_name + ".mp4"
     print("Sending command: " + cmd)
     subprocess.call(cmd, shell=True)
 
