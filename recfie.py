@@ -14,6 +14,9 @@ def get_sorted_files(path):
     files.sort()
     return files
 
+cmd = "udisksctl mount -b /dev/sdb1"
+subprocess.call(cmd, shell=True)
+
 source_path = USB_PATH
 while not os.path.isdir(source_path):
     print("Path " + source_path + " is not accessible at the moment. Retrying in " + str(USB_WAIT_DELAY) + " seconds...")
